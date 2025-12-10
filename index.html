@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tradie's Profit Calculator & Quote Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f5f0; /* Light Sage */
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .sortable:hover {
+            cursor: pointer;
+            background-color: #f9fafb;
+        }
+        .sort-asc::after {
+            content: ' ▲';
+            font-size: 0.8em;
+        }
+        .sort-desc::after {
+            content: ' ▼';
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-teal-700">Quote Command</h1>
+            <p class="text-xl text-gray-600 mt-2">Build. Price. Impress.</p>
+        </header>
+
+        <main class="grid lg:grid-cols-3 gap-8">
+
+            <!-- Left Column: Input Form -->
+            <div class="lg:col-span-1">
+                <div class="card p-8 sticky top-8">
+                    <h2 class="text-2xl font-bold mb-6 text-center">Job Profit Estimator</h2>
+                    <form id="quote-form" class="space-y-4">
+                        <div>
+                            <label for="client-name" class="block text-sm font-medium text-gray-700">Client Name</label>
+                            <input type="text" id="client-name" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" placeholder="e.g., The Next Big Thing Ltd." required>
+                        </div>
+                        <div>
+                            <label for="materials-cost" class="block text-sm font-medium text-gray-700">Materials Cost (£)</label>
+                            <input type="number" id="materials-cost" min="0" step="0.01" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" placeholder="e.g., 150" required>
+                        </div>
+                        <div>
+                            <label for="labour-hours" class="block text-sm font-medium text-gray-700">Total Labour Hours</label>
+                            <input type="number" id="labour-hours" min="0" step="0.5" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" placeholder="e.g., 8" required>
+                        </div>
+                        <div>
+                            <label for="hourly-rate" class="block text-sm font-medium text-gray-700">Your Hourly Rate (£)</label>
+                            <input type="number" id="hourly-rate" min="0" step="0.01" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" placeholder="e.g., 40" required>
+                        </div>
+                        <div>
+                            <label for="profit-margin" class="block text-sm font-medium text-gray-700">Desired Profit Margin (%)</label>
+                            <input type="number" id="profit-margin" min="0" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" placeholder="e.g., 20" required>
+                        </div>
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors">
+                            Calculate & Add Quote
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column: Quote Dashboard -->
+            <div class="lg:col-span-2">
+                <div class="card p-8">
+                    <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                        <h2 class="text-2xl font-bold">Pending Quotes Dashboard</h2>
+                        <button id="export-csv" class="flex items-center gap-2 py-2 px-4 border border-teal-600 text-teal-600 font-semibold rounded-md hover:bg-teal-600 hover:text-white transition-colors">
+                            <i data-lucide="download"></i>
+                            Export to CSV
+                        </button>
+                    </div>
+                    
+                    <div id="quote-list-container" class="overflow-x-auto">
+                        <p id="empty-state" class="text-center text-gray-500 py-10">Your calculated quotes will appear here. Add a job to get started!</p>
+                        <table id="quote-table" class="min-w-full divide-y divide-gray-200 hidden">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sortable" data-sort="labourHours">Hours</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sortable" data-sort="profitAmount">Profit</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sortable" data-sort="totalQuoteVat">Total Quote</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="quote-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Rows will be inserted here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const quoteForm = document.getElementById('quote-form');
+        const quoteTableBody = document.getElementById('quote-table-body');
+        const quoteTable = document.getElementById('quote-table');
+        const emptyState = document.getElementById('empty-state');
+        const exportBtn = document.getElementById('export-csv');
+
+        let quotes = [];
+        let sortState = { key: 'clientName', order: 'asc' };
+
+        const formatCurrency = (value) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(value);
+
+        const calculateQuote = (clientName, materialsCost, labourHours, hourlyRate, profitMargin) => {
+            const labourCost = labourHours * hourlyRate;
+            const totalCost = materialsCost + labourCost;
+            const profitAmount = totalCost * (profitMargin / 100);
+            const finalQuote = totalCost + profitAmount;
+            const vatAmount = finalQuote * 0.20;
+            const totalQuoteVat = finalQuote + vatAmount;
+
+            return {
+                id: Date.now(),
+                clientName,
+                materialsCost,
+                labourHours,
+                hourlyRate,
+                profitMargin,
+                labourCost,
+                totalCost,
+                profitAmount,
+                finalQuote,
+                vatAmount,
+                totalQuoteVat
+            };
+        };
+
+        const renderTable = () => {
+            if (quotes.length === 0) {
+                quoteTable.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            quoteTable.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            
+            quoteTableBody.innerHTML = '';
+
+            const sortedQuotes = [...quotes].sort((a, b) => {
+                if (a[sortState.key] < b[sortState.key]) return sortState.order === 'asc' ? -1 : 1;
+                if (a[sortState.key] > b[sortState.key]) return sortState.order === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            sortedQuotes.forEach(quote => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${quote.clientName}</div>
+                        <div class="text-xs text-gray-500">Materials: ${formatCurrency(quote.materialsCost)}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">${quote.labourHours}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-green-600">${formatCurrency(quote.profitAmount)}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-bold text-gray-900">${formatCurrency(quote.totalQuoteVat)}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="delete-btn text-red-600 hover:text-red-900" data-id="${quote.id}">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+                    </td>
+                `;
+                quoteTableBody.appendChild(row);
+            });
+            lucide.createIcons();
+        };
+
+        quoteForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const clientName = document.getElementById('client-name').value;
+            const materialsCost = parseFloat(document.getElementById('materials-cost').value);
+            const labourHours = parseFloat(document.getElementById('labour-hours').value);
+            const hourlyRate = parseFloat(document.getElementById('hourly-rate').value);
+            const profitMargin = parseFloat(document.getElementById('profit-margin').value);
+
+            const newQuote = calculateQuote(clientName, materialsCost, labourHours, hourlyRate, profitMargin);
+            quotes.push(newQuote);
+            renderTable();
+            quoteForm.reset();
+        });
+
+        quoteTableBody.addEventListener('click', (e) => {
+            const deleteBtn = e.target.closest('.delete-btn');
+            if (deleteBtn) {
+                const idToDelete = parseInt(deleteBtn.dataset.id);
+                quotes = quotes.filter(quote => quote.id !== idToDelete);
+                renderTable();
+            }
+        });
+
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', () => {
+                const sortKey = header.dataset.sort;
+                
+                document.querySelectorAll('.sortable').forEach(h => {
+                    h.classList.remove('sort-asc', 'sort-desc');
+                });
+
+                if (sortState.key === sortKey) {
+                    sortState.order = sortState.order === 'asc' ? 'desc' : 'asc';
+                } else {
+                    sortState.key = sortKey;
+                    sortState.order = 'asc';
+                }
+                
+                header.classList.add(sortState.order === 'asc' ? 'sort-asc' : 'sort-desc');
+                renderTable();
+            });
+        });
+
+        exportBtn.addEventListener('click', () => {
+            if (quotes.length === 0) {
+                alert('No quotes to export!');
+                return;
+            }
+
+            const headers = [
+                'Client Name', 'Materials Cost', 'Labour Hours', 'Hourly Rate', 'Profit Margin (%)',
+                'Labour Cost', 'Total Cost (Pre-Profit)', 'Profit Amount', 'Quote (excl. VAT)', 'VAT Amount', 'Total Quote (incl. VAT)'
+            ];
+            const rows = quotes.map(q => [
+                `"${q.clientName.replace(/"/g, '""')}"`, q.materialsCost, q.labourHours, q.hourlyRate, q.profitMargin,
+                q.labourCost, q.totalCost, q.profitAmount, q.finalQuote, q.vatAmount, q.totalQuoteVat
+            ]);
+
+            let csvContent = "data:text/csv;charset=utf-8," 
+                + headers.join(",") + "\n" 
+                + rows.map(e => e.join(",")).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "quotes_export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+    </script>
+</body>
+</html>
