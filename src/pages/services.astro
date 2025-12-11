@@ -1,0 +1,115 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Building2, Stethoscope, GraduationCap } from "lucide-react";
+
+const sectors = [
+    {
+        title: "Corporate Offices",
+        icon: Building2,
+        desc: "First impressions are everything. We ensure your reception, boardrooms, and workspaces reflect your professional standards.",
+        features: [
+            "Daily office cleaning",
+            "It equipment sanitization",
+            "Carpet and upholstery maintenance",
+        ],
+    },
+    {
+        title: "Medical & Clinical",
+        icon: Stethoscope,
+        desc: "We adhere to strict CQC guidelines to maintain sterile, safe environments for patients and staff.",
+        features: [
+            "Infection control protocols",
+            "Terminal cleaning",
+            "Bio-hazard disposal",
+        ],
+    },
+    {
+        title: "Education & Schools",
+        icon: GraduationCap,
+        desc: "Creating safe, clean learning environments with flexible scheduling around term times.",
+        features: [
+            "DBS-checked staff",
+            "Non-toxic cleaning agents",
+            "Deep cleaning during holidays",
+        ],
+    },
+];
+---
+
+<Layout title="Our Sectors | Pristine Commercial">
+    <main class="bg-white">
+        <!-- Hero -->
+        <div class="bg-gray-900 py-24 sm:py-32">
+            <div
+                class="mx-auto max-w-7xl px-6 lg:px-8 text-center sm:text-left"
+            >
+                <div class="mx-auto max-w-2xl lg:mx-0">
+                    <h2 class="text-base font-semibold leading-7 text-accent">
+                        Specialist Services
+                    </h2>
+                    <p
+                        class="mt-2 text-4xl font-bold tracking-tight text-white sm:text-6xl"
+                    >
+                        Sectors We Serve
+                    </p>
+                    <p class="mt-6 text-lg leading-8 text-gray-300">
+                        We don't believe in a one-size-fits-all approach. Every
+                        sector has unique compliance, safety, and aesthetic
+                        requirements.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div
+                    class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+                >
+                    {
+                        sectors.map((sector) => (
+                            <article class="flex flex-col items-start justify-between">
+                                <div class="flex items-center gap-x-4 text-xs">
+                                    <div class="bg-accent/10 p-3 rounded-lg">
+                                        <sector.icon class="h-6 w-6 text-accent" />
+                                    </div>
+                                </div>
+                                <div class="group relative">
+                                    <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                                        <a href="#">
+                                            <span class="absolute inset-0" />
+                                            {sector.title}
+                                        </a>
+                                    </h3>
+                                    <p class="mt-5 text-sm leading-6 text-gray-600">
+                                        {sector.desc}
+                                    </p>
+                                </div>
+                                <ul class="mt-8 space-y-3 text-sm leading-6 text-gray-600">
+                                    {sector.features.map((feature) => (
+                                        <li class="flex gap-x-3">
+                                            <svg
+                                                class="h-6 w-5 flex-none text-accent"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                                    clip-rule="evenodd"
+                                                />
+                                            </svg>
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </article>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>

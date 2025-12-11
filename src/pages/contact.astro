@@ -1,0 +1,144 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Request Audit | Pristine Commercial">
+    <main class="bg-gray-50">
+        <div class="bg-gray-900 py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+                <h1
+                    class="text-4xl font-bold tracking-tight text-white sm:text-6xl"
+                >
+                    Secure Your Cleaning Contract
+                </h1>
+                <p class="mt-6 text-lg leading-8 text-gray-300">
+                    Book a comprehensive site audit and receive a bespoke
+                    proposal within 48 hours.
+                </p>
+            </div>
+        </div>
+
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-24">
+            <div
+                class="bg-white rounded-2xl shadow-xl overflow-hidden md:grid md:grid-cols-3"
+            >
+                <div
+                    class="bg-accent p-8 md:col-span-1 text-white flex flex-col justify-between"
+                >
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Why choose us?</h3>
+                        <ul class="space-y-4 text-sm opacity-90">
+                            <li>• ISO 9001 Certified</li>
+                            <li>• Dedicated Account Manager</li>
+                            <li>• Monthly Quality Audits</li>
+                            <li>• 60-Day Trial Period</li>
+                        </ul>
+                    </div>
+                    <div class="mt-8">
+                        <p class="font-semibold">Urgent Enquiry?</p>
+                        <a
+                            href="tel:0800123456"
+                            class="text-2xl font-bold block mt-2 hover:opacity-80"
+                            >0800 123 456</a
+                        >
+                    </div>
+                </div>
+
+                <div class="p-8 md:col-span-2">
+                    <form class="space-y-6">
+                        <div
+                            class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2"
+                        >
+                            <div>
+                                <label
+                                    for="company"
+                                    class="block text-sm font-medium leading-6 text-gray-900"
+                                    >Company Name</label
+                                >
+                                <div class="mt-2">
+                                    <input
+                                        type="text"
+                                        name="company"
+                                        id="company"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    for="sector"
+                                    class="block text-sm font-medium leading-6 text-gray-900"
+                                    >Sector</label
+                                >
+                                <div class="mt-2">
+                                    <select
+                                        id="sector"
+                                        name="sector"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
+                                    >
+                                        <option>Corporate Office</option>
+                                        <option>Medical / Clinical</option>
+                                        <option>Education</option>
+                                        <option>Industrial</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    for="name"
+                                    class="block text-sm font-medium leading-6 text-gray-900"
+                                    >Contact Name</label
+                                >
+                                <div class="mt-2">
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    for="email"
+                                    class="block text-sm font-medium leading-6 text-gray-900"
+                                    >Email Address</label
+                                >
+                                <div class="mt-2">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        id="email"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                for="details"
+                                class="block text-sm font-medium leading-6 text-gray-900"
+                                >Requirements (Area size, frequency, current
+                                issues)</label
+                            >
+                            <div class="mt-2">
+                                <textarea
+                                    id="details"
+                                    name="details"
+                                    rows="4"
+                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
+                                ></textarea>
+                            </div>
+                        </div>
+                        <button
+                            type="submit"
+                            class="rounded-md bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 w-full sm:w-auto"
+                            >Request Proposal</button
+                        >
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>
