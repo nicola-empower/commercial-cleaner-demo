@@ -5,20 +5,23 @@ import Testimonials from "../components/Testimonials.jsx";
 import FAQ from "../components/FAQ.jsx";
 import FeatureSection from "../components/FeatureSection.jsx";
 import ProcessFlow from "../components/ProcessFlow.jsx";
-import { ShieldCheck, Leaf, Award } from "lucide-react";
+import { ShieldCheck, Leaf, Award, Users, Clock, Lock } from "lucide-react";
 
 const painPoints = [
 	{
 		title: "Guaranteed Cover",
 		desc: "Sickness or holiday? We have a standby team ready to deploy, so you never miss a service.",
+		icon: Users,
 	},
 	{
 		title: "Security Vetted",
 		desc: "Every staff member is DBS checked, uniformed, and trained in site security protocols.",
+		icon: Lock,
 	},
 	{
 		title: "Out of Hours",
 		desc: "We work around your schedule—late nights or early mornings—to ensure zero disruption.",
+		icon: Clock,
 	},
 ];
 
@@ -127,6 +130,8 @@ const sectors = [
 			features={painPoints}
 			imageSrc="/hero.png"
 			align="left"
+			quote={null}
+			author={null}
 		/>
 
 		<!-- Sector Expertise -->
