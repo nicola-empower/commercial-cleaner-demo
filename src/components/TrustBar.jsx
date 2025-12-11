@@ -29,7 +29,7 @@ const TrustBar = ({ theme = 'light', items = defaultItems }) => {
                     ))}
 
                     {/* Payment Methods */}
-                    <div className="flex items-center gap-4 border-l border-gray-200 pl-8 hidden md:flex">
+                    <div className="items-center gap-4 border-l border-gray-200 pl-8 hidden md:flex">
                         <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">We Accept</span>
                         <div className="flex gap-2">
                             <div className="h-8 w-12 bg-gray-100 rounded flex items-center justify-center text-gray-400 font-bold text-xs">VISA</div>
